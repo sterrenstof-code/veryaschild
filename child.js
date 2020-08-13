@@ -210,16 +210,21 @@ let carts = [
       // console.log(item);
   
       return `<article class="menu-item">
-            <img src=${item.img} alt=${item.title} class="photo" />
+              <div>
+            <img src=${item.img} alt=${item.title} class="photo">
+            </div> 
+
             <div class="item-info">
-              <header>
+          
+         
                 <h4>${item.title}</h4>
                 <h4 class="price">$${item.price}</h4>
-              </header>
+         
               <p class="item-text">
                 ${item.desc}
               </p>
             </div>
+            <div class="btn"><p>ADD ${item.title} TO CART</p></div>
           </article>`;
     });
     displayMenu = displayMenu.join("");
@@ -230,7 +235,30 @@ let carts = [
 
 /* shopping cart */
 
+//show cart when clicked
 
+const cartButton = document.querySelector("#cart");
+const cartOverlay =  document.querySelector(".cart-overlay");
+const cart =  document.querySelector(".cart");
+const close = document.querySelector(".fa-window-close");
 
+cartButton.addEventListener("click", () => {
+  if (cartOverlay.style.visibility !== "hidden"){
+    cartOverlay.style.visibility = "hidden";
+  } else cartOverlay.style.visibility = "visible";
+  cart.style.transform = " translateX(0%)";
+})
 
+close.addEventListener("click", () => {
+  cartOverlay.style.visibility = "hidden";
+  cart.style.transform = " translateX(0%)";
+} )
+
+const filterBtn = document.querySelectorAll(".filter-btn");
+
+for (button of filterBtn){
+  button.addEventListener("click", function(){
+    console.log("succes");
+  })
+};
 
