@@ -28,7 +28,7 @@
       "category": "Face",
       "fields": {
         "title": "Marrakech Intense Parfum",
-        "price": 12.99,
+        "price": 42.99,
         "image": { "fields": { "file": { "url": "./images/fourteen.jpg"  } } }
       },
       "desc": "The most potent form of our raw, unorthodox fragrance, perfectly sized for travel. Woody, spicy notes are balanced by fresh florals and a hint of the animalistic."
@@ -61,7 +61,7 @@
       "category": "Hair & Body",
       "fields": {
         "title": "Redemption Body Scrub",
-        "price": 32.99,
+        "price": 132.99,
         "image": { "fields": { "file": { "url": "./images/nine.jpg"  } } }
       },
       "desc": "A bracing blend of finely milled Pumice, Bamboo Stem and aromatic Pine Needle oil that sloughs away tired cells to leave skin polished and refreshed, perfectly prepared for hydration."
@@ -72,7 +72,7 @@
       "category": "Kits",
       "fields": {
         "title": "Kits for Him",
-        "price": 45.99,
+        "price": 41.99,
         "image": { "fields": { "file": { "url": "./images/ten.jpg"   } } }
       },
       "desc": "I'm baby letterpress tumeric microdosing vinyl, cloud bread forage fixie cronut ennui tofu banjo tacos pickled. Cloud bread polaroid pitchfork PBR&B palo santo, humblebrag fanny pack cliche flexitarian."
@@ -83,7 +83,7 @@
       "category": "Kits",
       "fields": {
         "title": "Kits for Her",
-        "price": 33.99,
+        "price": 34.99,
         "image": { "fields": { "file": { "url":"./images/eleven.jpg"   } } }
       },
       "desc": "I'm baby letterpress tumeric microdosing vinyl, cloud bread forage fixie cronut ennui tofu banjo tacos pickled. Cloud bread polaroid pitchfork PBR&B palo santo, humblebrag fanny pack cliche flexitarian."

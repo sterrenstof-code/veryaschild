@@ -99,7 +99,7 @@ const productsDoms = document.getElementById("products-dom");
 const getProducts = async () => {
   let products = await fetch("products.json");
   products = await products.json();
-  products= JSON.stringify(products);
+  products = JSON.stringify(products);
   products = JSON.parse(products);
   products = products.items;
   products = products.map((item) => {
@@ -113,12 +113,12 @@ const getProducts = async () => {
   return products;
 };
 
-
-
 const displayProducts = (products) => {
   let result = document.createElement("div");
   result.classList.add("products-dom__container");
-  productsDoms.innerHTML="";
+  if(productsDoms){
+    productsDoms.innerHTML = "";
+  }
   products.forEach((product) => {
     result.innerHTML += `
     <article class="product">
@@ -136,7 +136,7 @@ const displayProducts = (products) => {
       </a>
     </div>
     <button class="atc" data-id="${product.id}">
-      Add to your cart - €${product.price}
+     Add to your cart - €${product.price}
     </button>
   </article>
           `;
@@ -146,57 +146,50 @@ const displayProducts = (products) => {
   }
 };
 
-const btnContainer = document.querySelector(".btn-container");
-const filterBtns = document.querySelectorAll(".filter-btn");
+const filterBtnInit = () => {
+  const btnContainer = document.querySelector(".btn-container");
+  const filterBtns = document.querySelectorAll(".filter-btn");
 
-filterBtns.forEach(function (btn) {
-  btn.addEventListener("click", async function (e) {
-       // for every button that is pushed, determine the target category
-   
-    const category = e.currentTarget.dataset.id;
-    // get all the products.
-    await getProducts().then((products) => {
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener("click", async function (e) {
+      // for every button that is pushed, determine the target category
+      const category = e.currentTarget.dataset.id;
+      // get all the products.
+      await getProducts().then((products) => {
         // filter out the products that do not match the category
-      const menuCategory = products.filter(function (menuItem) {
-        if (menuItem.category === category) {
-          return menuItem;
+        const menuCategory = products.filter(function (menuItem) {
+          if (menuItem.category === category) {
+            return menuItem;
+          }
+        });
+        // the menucategory now holds all the product that have the right category
+        if (category === "all") {
+          displayProducts(products);
+        } else {
+          displayProducts(menuCategory);
         }
+        getBagButtons();
       });
-       // the menucategory now holds all the product that have the right category
-      if (category === "all") {
-        displayProducts(products);
-      } else {
-        displayProducts(menuCategory);
-      }
     });
   });
-});
+};
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await getProducts().then((products) => {
-    displayProducts(products);
-  });
-});
-
-async function filterPrice(event) {
+async function filterPrice(event,products) {
   const priceOption = document.querySelector(".price-btn");
-  const value = event.target.value
-  console.log(value);
+  const value = event.target.value;
   await getProducts().then((products) => {
-    if(value === "all") {
+    if (value === "all") {
       displayProducts(products);
-      return
+      return;
     }
-    if(value === "true"){
-      products.sort((a, b) => (a.price > b.price) ? 1 : -1);
+    if (value === "true") {
+      products.sort((a, b) => (a.price > b.price ? 1 : -1));
       displayProducts(products);
-      console.log("sort by lowest price first");
-    } 
-    else {
-      products.sort((a, b) => (a.price < b.price) ? 1 : -1);
+    } else {
+      products.sort((a, b) => (a.price < b.price ? 1 : -1));
       displayProducts(products);
-      console.log("sort by highest price first");
     }
+    getBagButtons();
   });
 }
 // /* shopping cart */
@@ -205,23 +198,195 @@ const cartBtn = document.querySelector("#cart");
 const closeCartBtn = document.querySelector(".close-cart img");
 const clearCartBtn = document.querySelector(".clear-cart");
 const cartDOM = document.querySelector(".cart");
-const cartOverlay =  document.querySelector(".cart-overlay");
+const cartOverlay = document.querySelector(".cart-overlay");
 const cartItems = document.querySelector(".header-right-number");
 const cartTotal = document.querySelector(".cart-total");
 const cartContent = document.querySelector(".cart-content");
 const productsDom = document.querySelector(".products-center");
 
-function showCart(){
-      cartOverlay.classList.toggle("transparentBcg");
-      cartDOM.classList.toggle("showCart");
-      document.body.classList.toggle("fixed");
+//show cart when clicked
+
+function showCart() {
+  cartOverlay.classList.toggle("transparentBcg");
+  cartDOM.classList.toggle("showCart");
+  document.body.classList.toggle("fixed");
+}
+
+if(closeCartBtn){
+  closeCartBtn.addEventListener("click", showCart);
+}
+
+if(cartBtn){
+  cartBtn.addEventListener("click", showCart);
+}
+
+// cart
+let cart = [];
+
+//buttons
+let buttonsDOM = [];
+
+const getBagButtons = () => {
+  const buttons = [...document.querySelectorAll(".atc")];
+  buttonsDOM = buttons;
+  buttons.forEach((button) => {
+    //for every button get the id
+    let id = button.dataset.id;
+    let inCart = cart.find((item) => item.id === id);
+    if (inCart) {
+      button.innerText = "In Cart";
+      button.disabled = true;
     }
+    button.addEventListener("click", (event) => {
+      btnAnimation();
+      event.target.innerText = "In Cart";
+      event.target.disabled = true;
+      // get product from products
+      let cartItem = { ...getProduct(id), amount: 1 };
+      // // add product to the cart
+      cart = [...cart, cartItem];
+      // // save cart in local storage
+      saveCart(cart);
+      // // set cart values
+      setCartValues(cart);
+      // // display cart item
+      addCartItem(cartItem);
+      // // add animation to the cart
+      
+    });
+  });
+};
 
-cartBtn.addEventListener("click", this.showCart)
+const btnAnimation = () => {
+  cartBtn.classList.add("clicked");
+  setTimeout(() => {
+    cartBtn.classList.remove("clicked");
+  }, 500);
+}
 
+const setCartValues = (cart) => {
+  let tempTotal = 0;
+  let itemsTotal = 0;
+  cart.map((item) => {
+    tempTotal += item.price * item.amount;
+    itemsTotal += item.amount;
+  });
+  cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
+  cartItems.innerText = itemsTotal;
+};
 
+function addCartItem(item) {
+  const div = document.createElement("div");
+  div.classList.add("cart-item");
+  div.innerHTML = `<img src=${item.image} alt="product" />
+          <div>
+            <h4>${item.title} </h4>
+            <h5>$${item.price} </h5>
+            <span class="remove-item" data-id=${item.id}>remove</span>
+          </div>
+          <div>
+            <i class="fas fa-chevron-up" data-id=${item.id}></i>
+            <p class="item-amount">
+            ${item.amount}
+            </p>
+            <i class="fas fa-chevron-down" data-id=${item.id}></i>
+          </div>`;
+  cartContent.appendChild(div);
+}
 
-// //show cart when clicked
+function showCart() {
+  cartOverlay.classList.toggle("transparentBcg");
+  cartDOM.classList.toggle("showCart");
+}
+
+const saveProducts = (products) => {
+  localStorage.setItem("products", JSON.stringify(products));
+};
+
+const getProduct = (id) => {
+  let products = JSON.parse(localStorage.getItem("products"));
+  return products.find((product) => product.id === id);
+};
+
+const saveCart = (cart) => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
+const getCart = () => {
+  return localStorage.getItem("cart")
+    ? JSON.parse(localStorage.getItem("cart"))
+    : [];
+};
+
+function populateCart(cart) {
+  cart.forEach((item) => addCartItem(item));
+}
+
+function setupAPP() {
+  cart = getCart();
+  setCartValues(cart);
+  populateCart(cart);
+}
+
+function cartLogic() {
+  clearCartBtn.addEventListener("click", () => clearCart());
+  // cart functionality
+  cartContent.addEventListener("click", (event) => {
+    if (event.target.classList.contains("remove-item")) {
+      let removeItemEl = event.target;
+      let id = removeItemEl.dataset.id;
+  
+      cartContent.removeChild(removeItemEl.parentElement.parentElement);
+      removeItem(id);
+    } else if (event.target.classList.contains("fa-chevron-up")) {
+      let addAmount = event.target;
+      let id = addAmount.dataset.id;
+
+      let tempItem = cart.find((item) => item.id === id);
+      tempItem.amount = tempItem.amount + 1;
+      saveCart(cart);
+      setCartValues(cart);
+      addAmount.nextElementSibling.innerText = tempItem.amount;
+    } else if (event.target.classList.contains("fa-chevron-down")) {
+      let lowerAmount = event.target;
+      let id = lowerAmount.dataset.id;
+      let tempItem = cart.find((item) => item.id === id);
+      tempItem.amount = tempItem.amount - 1;
+      if (tempItem.amount > 0) {
+        saveCart(cart);
+        setCartValues(cart);
+        lowerAmount.previousElementSibling.innerText = tempItem.amount;
+      } else {
+        cartContent.removeChild(lowerAmount.parentElement.parentElement);
+        removeItem(id);
+      }
+    }
+  });
+}
+
+function clearCart() {
+  let cartItems = cart.map((item) => item.id);
+  cartItems.forEach((id) => removeItem(id));
+  while (cartContent.children.length > 0) {
+    cartContent.removeChild(cartContent.children[0]);
+  }
+  showCart();
+}
+
+function removeItem(id) {
+  cart = cart.filter((item) => item.id !== id);
+  setCartValues(cart);
+  saveCart(cart);
+  let button = getSingleButton(id);
+  if(button){
+    button.disabled = false;
+    button.innerHTML = `Add to your cart again`;
+  }
+  
+}
+
+function getSingleButton(id) {
+  return buttonsDOM.find((button) => button.dataset.id === id);
+}
 
 // const cartBtn = document.querySelector("#cart");
 // const closeCartBtn = document.querySelector(".close-cart img");
@@ -332,7 +497,6 @@ cartBtn.addEventListener("click", this.showCart)
 //     });
 //     cartTotal.innerText = parseFloat(tempTotal.toFixed(2));
 //     cartItems.innerText = itemsTotal;
-
 //   }
 //   addCartItem(item){
 //     const div = document.createElement("div");
@@ -462,3 +626,18 @@ cartBtn.addEventListener("click", this.showCart)
 //     ui.cartLogic()
 //    });
 // });
+
+document.addEventListener("DOMContentLoaded", async () => {
+    setupAPP();
+    await getProducts()
+      .then((products) => {
+        displayProducts(products);
+        saveProducts(products);
+      })
+      .then(() => {
+        getBagButtons();
+        filterBtnInit();
+        cartLogic();
+      });
+  } 
+);

@@ -197,7 +197,7 @@ html {
 
 .introDiv-links p:nth-child(1) {
   padding-bottom: 1.5rem;
-  font-size: 24px;
+  font-size: 46px;
 }
 
 .introDiv-links p:nth-of-type(2) {
@@ -218,6 +218,13 @@ html {
   font-size: 14px;
   text-decoration: none;
   color: rgb(63, 69, 54);
+  background-color: rgba(253, 211, 162, 0.322);
+  transition: 0.2s all ease-in-out;
+}
+
+.main-btn:hover {
+  background-color: rgb(63, 69, 54);
+  color: rgb(253, 210, 162);
 }
 
 
@@ -320,7 +327,7 @@ html {
 }
 
 #h1 {
-    padding: 4rem 1.5rem 2rem 1.5rem;
+    padding: 8rem 1.5rem 2rem 2.5rem;
     font-size: 30px;
     text-align: left;
 }
@@ -388,18 +395,22 @@ button, h1 {
   .btn-container {
     position: relative;
     top: 5rem;
-    height: 150px;
+    min-height: 150px;
     align-items: center;
     display: flex;
-    justify-content: flex-end;
     padding: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-container > * {
+    margin: 0.5rem;
   }
   .filter-btn {
     background: transparent;
     border-color: rgb(63, 69, 54);
     font-size: 1rem;
     text-transform: capitalize;
-    margin: 0 0.5rem;
+  
     letter-spacing: 1px;
     padding: 0.375rem 0.75rem;
     color: rgb(63, 69, 54);
@@ -417,13 +428,13 @@ button, h1 {
 
   .price-btn {
     background: transparent;
-    border-color: rgb(63, 69, 54);
+    border: 2px solid rgb(63, 69, 54);
     font-size: 1rem;
     text-transform: capitalize;
-    margin: 0 0 0 0.5rem;
     letter-spacing: 1px;
     padding: 0.375rem 0.75rem;
     color: rgb(63, 69, 54);
+    min-height: 37px;
     cursor: pointer;
     transition: all 0.3s linear;
     -webkit-transition: all 0.3s linear;
@@ -441,7 +452,7 @@ button, h1 {
     flex-wrap: wrap;
     flex: 1 1 50%;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     width: 100vw;
     height: 800px;
@@ -464,7 +475,7 @@ button, h1 {
 }
 
 .second-image {
-    background-image: url(./images/annie-spratt-wSGD3Krremo-unsplash.jpg);
+    background-image: url(./images/three.jpg);
 }
 
 .third-image {
@@ -486,8 +497,8 @@ button, h1 {
     flex-direction: column;
     justify-content: space-between;
     min-width: 300px;
-    width: 50%;
-    height: 60%;
+    width: 30%;
+    min-height: 60%;
     padding-bottom: 2rem;
 }
 
@@ -509,11 +520,10 @@ button, h1 {
 }
 
 .intro-text a {
-    text-align: center;
-    width: 30%;
+    width: 45%;
     text-decoration: none;
     color: inherit;
-    padding: 1rem 1.5rem 1rem 1rem;
+    padding: 1rem 1.5rem 1rem 2rem;
     border: 1px solid rgba(0, 41, 0, 0.26);
 }
 
@@ -531,7 +541,7 @@ button, h1 {
 }
 
 #products-dom {
-  padding: 2rem;
+  padding: 0.5rem;
   width: 100%;
   height: 100%;
   position: relative;
@@ -546,15 +556,36 @@ button, h1 {
   background-color: #fff;
 }
 
+.clicked {
+  animation: shake 0.51s cubic-bezier(.36,.07,.19,.97);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-animation: shake 0.81s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
 /* Cart JS 
 
-.clicked {
-    animation: shake 0.81s cubic-bezier(.36,.07,.19,.97) both;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-    -webkit-animation: shake 0.81s cubic-bezier(.36,.07,.19,.97) both;
-}
+
 
 #cart:hover {
     animation: shake 0.81s cubic-bezier(.36,.07,.19,.97) both;
@@ -564,23 +595,6 @@ button, h1 {
     -webkit-animation: shake 0.81s cubic-bezier(.36,.07,.19,.97) both;
 }
   
-  @keyframes shake {
-    10%, 90% {
-      transform: translate3d(-1px, 0, 0);
-    }
-    
-    20%, 80% {
-      transform: translate3d(2px, 0, 0);
-    }
-  
-    30%, 50%, 70% {
-      transform: translate3d(-4px, 0, 0);
-    }
-  
-    40%, 60% {
-      transform: translate3d(4px, 0, 0);
-    }
-  }
 
   body#about{background-color:#000;}
 
@@ -591,7 +605,7 @@ button, h1 {
 main {
     font-family: 'Lato', sans-serif;
     font-size: 12px;
-    padding-top:4rem;
+    padding-top:5rem;
     z-index: 5;
     overflow: hidden;
     background-color:rgb(255, 251, 252);
@@ -630,6 +644,7 @@ main {
   position: relative;
   overflow: hidden;
   padding: 0;
+  margin: 2rem 0;
 }
 .bag-btn {
   position: absolute;
@@ -663,6 +678,7 @@ main {
   min-height: 12rem;
   max-height: 310px;
   transition: var(--mainTransition);
+  object-fit: cover;
 }
 .img-container:hover .product-img {
   opacity: 0.5;
@@ -671,6 +687,7 @@ main {
 .product {
   padding: 1rem;
   font-family: 'Lato', sans-serif;
+  background-color: rgba(63, 69, 54, 0.021);
 }
 
 .vertical-line {
@@ -687,7 +704,7 @@ main {
 .product p {
   font-size: 12px;
   line-height: 1.5;
-  margin: 1rem 0;
+  /* margin: 1rem 0; */
 }
 
 .category {
@@ -695,7 +712,7 @@ main {
 }
 
 .info-container {
-  min-height: 300px;
+  min-height: 250px;
   display: flex;
   flex-direction: column;
   justify-content:space-around;
@@ -725,7 +742,7 @@ main {
     grid-template-areas: "columnOne columnTwo columnThree";
     width: 100vw;
     height: 600px;
-    background-color:rgb(255, 251, 252);
+    background-color:rgb(255, 255, 255);
     border-bottom: 1px solid rgb(63, 69, 54);
     animation: fadein 1s linear;
     -moz-animation: fadein 1s linear;
@@ -1076,7 +1093,7 @@ input[type='radio']:checked:after {
 .imageTwo {
     height: 350px;
     width: 140px;
-    background-image: url./images/six.jpg);
+    background-image: url(./images/six.jpg);
     background-size: cover;
     background-position: 50%;   
 }
@@ -1085,28 +1102,39 @@ input[type='radio']:checked:after {
 
 .andereProducten {
     display: flex;
+    flex: 1 1 auto;
     flex-direction: row;
     font-size: 10px;
     color: rgb(63, 69, 54);
-    
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .andereProducten div {
-    height: 350px;
-    width: 25%;
+  margin: 0 auto;
+  text-align: center;
+  flex-grow: 1;
+  min-width: 250px;
+    min-height: 650px;
     border-right: 1px solid rgb(63, 69, 54);
     border-top: 1px solid rgb(63, 69, 54);
     border-bottom: 1px solid rgb(63, 69, 54);
     justify-content: center;
 }
 
+#andereOne, #andereTwo, #andereThree {
+  display: flex;
+  flex-direction: column;
+}
+
 .center {
-    margin: auto;
-    height: 200px;
-    background-size: contain;
+    margin: 1rem auto;
+    height: 300px;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     width: 80%;
+    max-width: 400px;
 }
 
 
@@ -1116,6 +1144,41 @@ input[type='radio']:checked:after {
     font-weight: 400;
     letter-spacing: 1px;
     text-decoration: none;
+}
+
+
+#andereOne .center{
+  background-image: url(./images/thirteen.jpg);
+}
+
+#andereTwo .center{
+  background-image: url(./images/ten.jpg);
+}
+
+#also {
+  padding: 1rem;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+
+#andereOne, #andereTwo, #andereThree {
+  padding: 1rem;
+  letter-spacing: 0.05em;
+  display: flex;
+}
+
+#andereOne p:nth-child(3) {
+  padding: 1rem 0;
+}
+
+#andereTwo p:nth-child(3){
+  padding: 1rem 0;
+} 
+
+#andereThree p:nth-child(3) {
+  padding: 1rem 0;
 }
 
 /* about the company */
@@ -1149,7 +1212,7 @@ input[type='radio']:checked:after {
     width: 25%;
     min-width: 150px;
     flex-grow: 1;
-    border: 1px solid white;
+    border: 1px solid rgb(63, 69, 54);
 }
 
 
@@ -1217,7 +1280,6 @@ input[type='radio']:checked:after {
 /* footer Two*/
 
 footer {
- 
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -1563,8 +1625,8 @@ footer {
     padding: 2rem 1.5rem;
     transition: var(--mainTransition);
     transform: translateX(100%);
-    border: 1px solid rgba(0, 0, 0, 0.822);
-    margin-top: 5rem;
+    color: rgb(63, 69, 54);
+    padding-top: 8rem;
   }
   .showCart {
     transform: translateX(0);
@@ -1575,6 +1637,11 @@ footer {
 
   .fixed {
     position: fixed;
+  }
+
+  .remove-item {
+    color: rgb(63, 69, 54);
+    cursor: pointer;
   }
   
   @media screen and (min-width: 768px) {
@@ -1595,15 +1662,15 @@ footer {
     margin: 2rem 0;
     font-weight: 550 !important;
     font-size: 20px;
-    color: rgb(63, 69, 54);
     letter-spacing: 1.5px;
-    font-family: 'EB Garamond', serif;
+    font-family: Lato;
   }
 
   .cart h3 {
     text-decoration: none;
     color: rgb(63, 69, 54);
     font-size: 18px;
+    font-family: Lato;
   }
 
   .close-cart img {
@@ -1617,8 +1684,11 @@ footer {
     grid-template-columns: auto 1fr auto;
     grid-column-gap: 1.5rem;
     margin: 1.5rem 0;
+    font-family: Lato;
+    color: rgb(63, 69, 54);
   }
   .cart-item img {
+    object-fit: cover;
     width: 75px;
     height: 75px;
   }
@@ -1626,6 +1696,7 @@ footer {
     font-size: 0.85rem;
     text-transform: capitalize;
     letter-spacing: var(--mainSpacing);
+    
   }
   .cart-item h5 {
     margin: 0.5rem 0;
@@ -1742,17 +1813,53 @@ footer {
   } */
 
 
-  /* @media only screen and (max-width: 950px) {
-    .footer .col {
-      width: 33%;
-    }
-    .footer .col h1 {
-      font-size: 14px;
-    }
-    .footer .col ul li {
-      font-size: 13px;
-    }
-     */
+  @media only screen and (max-width: 850px) {
+    .productOne {
+      display:flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      height: auto;
+  }
+
+  .productOne div {
+    flex-grow: 1;
+    padding: 3rem 1.5rem;
+    min-width: 250px;
+  }
+
+  .productOne .productOne-columnThree {
+    border: 1px solid rgb(63, 69, 54);
+    max-width: 100%;
+  }
+
+  .productOne-columnOne {
+    border-bottom: 1px solid rgb(63, 69, 54);
+  }
+
+  .editorialImage {
+    width: 70%;
+    height: 73%;
+    background-position: center;
+  }
+
+  .editorialOne-columnOne-up {
+    font-size: 14px;
+  }
+
+  .andereProducten div {
+    flex-grow: 1;
+  }
+
+  .editorialOne {
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+  }
+  .editorialOne-columnTwo {
+    height: 100%;
+  }
+  }
+    
 
  
 
@@ -1778,6 +1885,23 @@ footer {
     .intro-text a {
       width: 50%;
     }
+
+
+.introDiv-rechts {
+  width: 100%;
+  min-width: 150px;
+}
+
+.container > div {
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 0;
+}
+
+.container > div > div {
+  margin: 2rem auto 0;
+  height: 300px;
+}
 }
 
 
