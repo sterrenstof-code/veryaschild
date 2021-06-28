@@ -145,6 +145,9 @@ const displayProducts = (products) => {
   }
 };
 
+let productsDisplayed = [];
+const priceOption = document.querySelector(".price-btn");
+
 const filterBtnInit = () => {
   const btnContainer = document.querySelector(".btn-container");
   const filterBtns = document.querySelectorAll(".filter-btn");
@@ -153,19 +156,23 @@ const filterBtnInit = () => {
     btn.addEventListener("click", async function (e) {
       // for every button that is pushed, determine the target category
       const category = e.currentTarget.dataset.id;
+      let event = priceOption;
+      console.log(event);
       // get all the products.
       await getProducts().then((products) => {
         // filter out the products that do not match the category
-        const menuCategory = products.filter(function (menuItem) {
-          if (menuItem.category === category) {
-            return menuItem;
+        const productCategory = products.filter(function (product) {
+          if (product.category === category) {
+            return product;
           }
         });
-        // the menucategory now holds all the product that have the right category
+        // the productCategory now holds all the product that have the right category
         if (category === "all") {
-          displayProducts(products);
+          filterPrice(event, products)
+          productsDisplayed = products;
         } else {
-          displayProducts(menuCategory);
+          filterPrice(event, productCategory)
+          productsDisplayed = products;
         }
         getBagButtons();
       });
@@ -173,10 +180,12 @@ const filterBtnInit = () => {
   });
 };
 
+
 async function filterPrice(event, products) {
-  const priceOption = document.querySelector(".price-btn");
-  const value = event.target.value;
-  await getProducts().then((products) => {
+  const value = event.value;
+  if(!products){
+    products = productsDisplayed;
+  }
     if (value === "all") {
       displayProducts(products);
       return;
@@ -189,25 +198,26 @@ async function filterPrice(event, products) {
       displayProducts(products);
     }
     getBagButtons();
-  });
 }
 
 function capitalize(s) {
   return s[0].toUpperCase() + s.slice(1);
 }
 
-const searchByValue = async (value) => {
-  await getProducts().then((products) => {
+const searchByValue = async (value, products) => {
+  let event = priceOption;
+  if(!products){
+    products = await getProducts().then();
+  }
     const valueSearched = products.filter(function (product) {
       const foundTitle = product.title.includes(value);
       if (foundTitle) {
         return product;
       }
     });
-    console.log(valueSearched);
     // the valueSearched now holds all the product that have the right category
     if (valueSearched.length != 0) {
-      displayProducts(valueSearched);
+      filterPrice(event, valueSearched)
     } else {
       let result = document.createElement("div");
       result.innerHTML += `
@@ -215,8 +225,7 @@ const searchByValue = async (value) => {
           `;
       productsDoms.appendChild(result);
     }
-  });
-};
+  };
 
 // create search section that displays underneath it
 const searchInput = document.querySelector(".search-input");
