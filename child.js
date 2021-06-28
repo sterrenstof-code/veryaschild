@@ -103,12 +103,11 @@ const getProducts = async () => {
   products = JSON.parse(products);
   products = products.items;
   products = products.map((item) => {
-    const category = item.category;
+    const{ category, desc, page } = item;
     const { title, price } = item.fields;
     const image = item.fields.image.fields.file.url;
     const id = item.sys.id;
-    const desc = item.desc;
-    return { category, title, price, image, id, desc };
+    return { category, title, price, image, id, desc, page };
   });
   return products;
 };
@@ -116,7 +115,7 @@ const getProducts = async () => {
 const displayProducts = (products) => {
   let result = document.createElement("div");
   result.classList.add("products-dom__container");
-  if(productsDoms){
+  if (productsDoms) {
     productsDoms.innerHTML = "";
   }
   products.forEach((product) => {
@@ -174,7 +173,7 @@ const filterBtnInit = () => {
   });
 };
 
-async function filterPrice(event,products) {
+async function filterPrice(event, products) {
   const priceOption = document.querySelector(".price-btn");
   const value = event.target.value;
   await getProducts().then((products) => {
@@ -192,6 +191,45 @@ async function filterPrice(event,products) {
     getBagButtons();
   });
 }
+
+function capitalize(s) {
+  return s[0].toUpperCase() + s.slice(1);
+}
+
+const searchByValue = async (value) => {
+  await getProducts().then((products) => {
+    const valueSearched = products.filter(function (product) {
+      const foundTitle = product.title.includes(value);
+      if (foundTitle) {
+        return product;
+      }
+    });
+    console.log(valueSearched);
+    // the valueSearched now holds all the product that have the right category
+    if (valueSearched.length != 0) {
+      displayProducts(valueSearched);
+    } else {
+      let result = document.createElement("div");
+      result.innerHTML += `
+        <h2>there are no search results for "${value}"</h2>
+          `;
+      productsDoms.appendChild(result);
+    }
+  });
+};
+
+// create search section that displays underneath it
+const searchInput = document.querySelector(".search-input");
+const searchBtn = document.querySelector(".search-btn");
+if (searchBtn) {
+  searchBtn.addEventListener("click", () => {
+    productsDoms.innerHTML = "";
+    const userInput = searchInput.value;
+    value = capitalize(userInput);
+    searchByValue(value);
+  });
+}
+
 // /* shopping cart */
 
 const cartBtn = document.querySelector("#cart");
@@ -212,11 +250,11 @@ function showCart() {
   document.body.classList.toggle("fixed");
 }
 
-if(closeCartBtn){
+if (closeCartBtn) {
   closeCartBtn.addEventListener("click", showCart);
 }
 
-if(cartBtn){
+if (cartBtn) {
   cartBtn.addEventListener("click", showCart);
 }
 
@@ -252,7 +290,6 @@ const getBagButtons = () => {
       // // display cart item
       addCartItem(cartItem);
       // // add animation to the cart
-      
     });
   });
 };
@@ -262,7 +299,7 @@ const btnAnimation = () => {
   setTimeout(() => {
     cartBtn.classList.remove("clicked");
   }, 500);
-}
+};
 
 const setCartValues = (cart) => {
   let tempTotal = 0;
@@ -334,7 +371,7 @@ function cartLogic() {
     if (event.target.classList.contains("remove-item")) {
       let removeItemEl = event.target;
       let id = removeItemEl.dataset.id;
-  
+
       cartContent.removeChild(removeItemEl.parentElement.parentElement);
       removeItem(id);
     } else if (event.target.classList.contains("fa-chevron-up")) {
@@ -377,11 +414,10 @@ function removeItem(id) {
   setCartValues(cart);
   saveCart(cart);
   let button = getSingleButton(id);
-  if(button){
+  if (button) {
     button.disabled = false;
     button.innerHTML = `Add to your cart again`;
   }
-  
 }
 
 function getSingleButton(id) {
@@ -628,16 +664,15 @@ function getSingleButton(id) {
 // });
 
 document.addEventListener("DOMContentLoaded", async () => {
-    setupAPP();
-    await getProducts()
-      .then((products) => {
-        displayProducts(products);
-        saveProducts(products);
-      })
-      .then(() => {
-        getBagButtons();
-        filterBtnInit();
-        cartLogic();
-      });
-  } 
-);
+  setupAPP();
+  await getProducts()
+    .then((products) => {
+      displayProducts(products);
+      saveProducts(products);
+    })
+    .then(() => {
+      getBagButtons();
+      filterBtnInit();
+      cartLogic();
+    });
+});

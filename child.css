@@ -402,15 +402,20 @@ button, h1 {
     flex-wrap: wrap;
   }
 
+  
+
   .btn-container > * {
     margin: 0.5rem;
+  }
+
+  .search-container {
+    margin-left: auto;
   }
   .filter-btn {
     background: transparent;
     border-color: rgb(63, 69, 54);
     font-size: 1rem;
     text-transform: capitalize;
-  
     letter-spacing: 1px;
     padding: 0.375rem 0.75rem;
     color: rgb(63, 69, 54);
@@ -424,6 +429,22 @@ button, h1 {
   .filter-btn:hover {
     background: rgb(63, 69, 54);
     color: white;
+  }
+
+  .search-container input, .search-container button {
+    background: transparent;
+    border-color: rgb(63, 69, 54);
+    font-size: 1rem;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    padding: 0.375rem 0.75rem;
+    color: rgb(63, 69, 54);
+    cursor: pointer;
+    transition: all 0.1s linear;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -ms-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
   }
 
   .price-btn {
